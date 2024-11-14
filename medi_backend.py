@@ -19,7 +19,7 @@ common_phrases = [
 ]
 
 # Endpoint to provide suggestions based on user input
-@app.route('/suggest', methods=['POST'])
+@app.route('/suggest', methods=['GET'])
 def suggest():
     data = request.get_json()
     user_input = data.get('input', '')
