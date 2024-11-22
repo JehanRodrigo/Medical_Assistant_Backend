@@ -43,11 +43,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
-from dotenv import load_dotenv
-import os
+# from dotenv import load_dotenv
+# import os
 
 # Load environment variables
-load_dotenv()
+# load_dotenv()
 # API_KEY = os.getenv("GPT2_API2")
 
 # Hugging Face API configuration
