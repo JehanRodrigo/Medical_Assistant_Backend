@@ -63,12 +63,12 @@ def query(payload):
 app = Flask(__name__)
 CORS(app)
 
-def generate_ai_suggestions(input_text, num_suggestions=1):
+def generate_ai_suggestions(input_text, num_suggestions=3):
     try:
         payload = {
             "inputs": input_text,
             "parameters": {
-                "max_length": 50,  # Adjust this as needed
+                "max_length": 20,  # Adjust this as needed
                 "num_return_sequences": num_suggestions
             }
         }
@@ -84,7 +84,7 @@ def suggest():
     user_input = data.get('input', '')
 
     if user_input:
-        ai_suggestions = generate_ai_suggestions(user_input, num_suggestions=1)
+        ai_suggestions = generate_ai_suggestions(user_input, num_suggestions=3)
         return jsonify({'suggestions': ai_suggestions})
 
     return jsonify({'suggestions': []})
