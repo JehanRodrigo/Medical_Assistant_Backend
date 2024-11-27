@@ -89,21 +89,42 @@ CORS(app)
 
 
 
-def generate_ai_suggestions(input_text, num_suggestions=1):
-    generated = text_gen_model(input_text, max_length=10, num_return_sequences=num_suggestions, num_beams=1)
-    return [g['generated_text'].strip() for g in generated]
+#def generate_ai_suggestions(input_text, num_suggestions=1):
+#   generated = text_gen_model(input_text, max_length=10, num_return_sequences=num_suggestions, num_beams=1)
+#   return [g['generated_text'].strip() for g in generated]
 
 @app.route('/suggest', methods=['POST'])
 def suggest():
-    data = request.get_json()
-    user_input = data.get('input', '')
+    try:
+        data = request.get_json()
+        user_input = data.get('input', '')
 
-    if user_input:
+        if not user_input:
+            return jsonify({'suggestions': []})
+
+#   if user_input:
        # common_suggestions = difflib.get_close_matches(user_input, common_phrases, n=2, cutoff=0.1)
-        ai_suggestions = generate_ai_suggestions(user_input, num_suggestions=1)
-        return jsonify({'suggestions': ai_suggestions}) 
+#        ai_suggestions = generate_ai_suggestions(user_input, num_suggestions=1)
+#       return jsonify({'suggestions': ai_suggestions}) 
 
-    return jsonify({'suggestions': []})
+
+    # Generate suggestion
+        suggestion = model_manager.generate_text(user_input)
+    
+        return jsonify({
+
+            'suggestions': [suggestion],
+            'status': 'success'
+
+        })
+
+    except Exception as e:
+        logger.error(f"Suggestion generation error: {e}")
+        return jsonify({
+            'error': str(e),
+            'status': 'error',
+            'suggestions': []
+        }), 400
 
 # Endpoint to get the first prompt as the placeholder
 @app.route('/get-first-prompt', methods=['GET'])
@@ -111,6 +132,13 @@ def get_first_prompt():
     
     return jsonify({'prompt': "Type something here..."})
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({
+        'status': 'healthy',
+        'model_loaded': model_manager.model is not None
+    }), 200
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8000)
 
