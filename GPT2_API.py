@@ -1,14 +1,7 @@
 import requests
 
-from dotenv import load_dotenv
-import os
-
-
-load_dotenv()
-API_KEY= os.getenv("GPT2_API2")
-
-API_URL = "https://api-inference.huggingface.co/models/openai-community/gpt2"
-headers = {"Authorization": f"Bearer {API_KEY}"}
+API_URL = "https://api-inference.huggingface.co/models/microsoft/biogpt"
+headers = {"Authorization": "Bearer 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"}
 
 # headers = {"Authorization": "Bearer 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"}
 

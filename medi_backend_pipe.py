@@ -9,7 +9,7 @@ CORS(app)
 HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/openai-community/gpt2"  # Change the model if needed
 HUGGINGFACE_API_KEY = "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"
 
-def generate_ai_suggestions(input_text, num_suggestions=3, max_length=10):
+def generate_ai_suggestions(input_text, num_suggestions=3, max_length=20):
     headers = {
         "Authorization": f"Bearer {HUGGINGFACE_API_KEY}"
     }
