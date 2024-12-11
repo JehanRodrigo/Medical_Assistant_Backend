@@ -9,11 +9,17 @@ CORS(app)
 model_name = "microsoft/BioGPT"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
-text_gen_model = pipeline('text-generation', model=model, tokenizer=tokenizer, truncation=True) # device=0 to use GPU in mac
+text_gen_model = pipeline('text-generation', model=model, tokenizer=tokenizer, truncation=True, ddevice=-1) # device=0 to use GPU in mac
 
 def generate_ai_suggestions(input_text, num_suggestions=1):
     generated = text_gen_model(input_text, max_length=10, num_return_sequences=num_suggestions, num_beams=1)
     return [g['generated_text'].strip() for g in generated]
+
+# Endpoint to check if the server is running
+@app.route('/', methods=['GET'])
+def status_check():
+    
+    return jsonify({'prompt': "Server is Up and Running..."})
 
 @app.route('/suggest', methods=['POST'])
 def suggest():
